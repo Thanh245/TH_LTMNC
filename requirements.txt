@@ -1,0 +1,7 @@
+asgiref 
+certifi==2020.12.5
+Django 
+psycopg2 
+pytz 
+sqlparse 
+wincertstore==0.2

@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block navbar %}
+<nav class="navbar navbar-expand-sm navbar-light " style="margin-top: -12px">
+  <div class="collapse navbar-collapse" id="navbarnar">
+    <ul class="navbar-nav" >
+      <li class="nav-item " >
+        <a class="nav-link" href="/">HOME<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item active" >
+        <a class="nav-link" href="/contest">CONTEST</a>
+      </li>
+      {% if user.is_admin %}
+      <li class="nav-item">
+        <a class="nav-link" href="/create_contest">CREATE CONTEST</a>
+      </li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>
+{% endblock %}
+{% block content %}
+
+<table class="table table-bordered" style="font-size: 13px;margin-top:15px">
+  <thead>
+    <tr  style="text-align: center">
+      <th scope="col"></th>
+      <th scope="col">Name</th>
+      <th scope="col">Contest type</th>
+      <th scope="col">description</th>
+      <th scope="col">Start</th>
+      <th scope="col">End</th>
+      <th scope="col">Status</th>
+      <th scope="col">Participant</th>
+    </tr>
+  </thead>
+<!--{{ user.is_admin }}-->
+  <tbody style="text-align: center">
+    {% for contest in list_contest %}
+    <tr >
+      <th scope="row">{{forloop.counter}}</th>
+      <td>
+          <a href="/contest/{{contest.id}}/">
+            {{contest.name}}
+          </a>
+      </td>
+      <td>{{contest.contest_type}}</td>
+      <td>{{contest.description}}</td>
+      <td>{{contest.start}}</td>
+      <td>{{contest.end}}</td>
+      <td>{{contest.get_status}}</td>
+      <td>{{contest.participant}}</td>
+    </tr>
+    {% endfor %}
+    {% for contest in list_contest2 %}
+    <tr >
+      <th scope="row">{{forloop.counter}}</th>
+      <td>{{contest.name}}</td>
+      <td>{{contest.contest_type}}</td>
+      <td>{{contest.description}}</td>
+      <td>{{contest.start}}</td>
+      <td>{{contest.end}}</td>
+      <td>{{contest.get_status}}</td>
+      <td>{{contest.participant}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

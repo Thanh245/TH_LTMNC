@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block css %} {% include './index.css' %} {% endblock %}
+{% block navbar %}
+<nav class="navbar navbar-expand-sm navbar-light " style="margin-top: -12px">
+  <div class="collapse navbar-collapse" id="navbarnar">
+    <ul class="navbar-nav" >
+      <li class="nav-item active" >
+        <a class="nav-link" href="/">HOME<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item" >
+        <a class="nav-link" href="/contest">CONTEST</a>
+      </li>
+      {% if user.is_admin %}
+      <li class="nav-item">
+        <a class="nav-link" href="/create_contest">CREATE CONTEST</a>
+      </li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>
+{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="row card-body ">
+    <div class="col-8">
+    {% for notify in notifies %}
+      <div id="pageContent">
+        <div class="entry">
+          <div class="title">
+            <a href="/notifys/{{notify.id}}/">{{ notify.title }}</a>
+          </div>
+          <div class="content">
+
+            <p >{{ notify.content|truncatewords:100 }}</p>
+            <a href="/notifys/{{notify.id}}/" style="text-decoration:none;">Read more »</a>
+          </div>
+
+          <div>
+              <small>{{ notify.pub_date }}</small>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+    </div>
+
+    <div class="col-4">
+      <div class="tm-box-right">
+        <div class="tm-box-right-header">
+          New Contest
+        </div>
+        <div class="tm-box-right-body">
+          <ul class="problem-list">
+            {% for contest in list_contest %}
+            <li>
+              <a href="/contest/{{contest.id}}/">{{contest.name}} </a>
+            </li>
+          {% endfor %}
+          </ul>
+        </div>
+      </div>
+
+      <div class="tm-box-right">
+        <div class="tm-box-right-header">
+          Top Coders
+        </div>
+        <div class="tm-box-right-body">
+          <ul class="problem-list">
+            {% for user in list_user %}
+            <li>
+              {{user.user_name}}
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+
+      <div class="tm-box-right">
+        <div class="tm-box-right-header">
+          Recent Actions
+        </div>
+        <div class="tm-box-right-body">
+          <ul class="problem-list">
+            {% for notify in notifies %}
+            <li>
+              <a href="/notifys/{{notify.id}}/">{{ notify.title }}</a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,51 @@
+.tm-box-right {
+    border: 1px solid #9E9E9E;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.tm-box-right-header {
+    padding: 8px;
+    color: #3B5998;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.tm-box-right-body {
+    border-top: 1px solid #9E9E9E;
+    font-size: 14px;
+}
+
+.coder-list, .problem-list {
+    padding: 10px;
+    margin: 0;
+}
+
+ul {
+    list-style-type: none;
+}
+
+#pageContent {
+    width: 100%;
+    float: left;
+    word-wrap: break-word;
+}
+
+.entry {
+    margin-bottom: 30px;
+}
+
+.title {
+    font-size: 25px;
+    color: #3B5998 !important;
+}
+
+.content {
+    margin: 1em 0;
+    padding-left: 1em;
+    border-left: 4px solid #B9B9B9;
+    line-height: 20px;
+    font-size: 15px;
+}
+

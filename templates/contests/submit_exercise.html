@@ -1,9 +1,13 @@
 {% extends "base.html" %}
+{% load static %}
 {% block navbar %}
-<nav class="navbar navbar-expand-sm navbar-light " style="margin-top: -12px">
-  <div class="collapse navbar-collapse" id="navbarnar">
-    <ul class="navbar-nav" >
-      <li class="nav-item " >
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <a class="navbar-brand" href="/">
+      <img src="{% static 'images/logodut.png' %}" alt="My image" style="height:40px">
+  </a>
+  <div class="collapse navbar-collapse">
+    <ul class="navbar-nav">
+      <li class="nav-item ">
         <a class="nav-link" href="/">HOME<span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item active" >
@@ -14,97 +18,104 @@
         <a class="nav-link" href="/create_contest">CREATE CONTEST</a>
       </li>
       {% endif %}
+      </ul>
+      <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
+      {% if request.user.is_authenticated %}
+      <li class="nav-item">
+        <a class="nav-link" href="/logout">Logout</a>
+      </li>
+      {% else %}
+      <li class="nav-item">
+        <a class="nav-link" href="/login">Login</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/register">Sign Up</a>
+      </li>
+      {% endif %}
     </ul>
   </div>
 </nav>
 {% endblock %}
 {% block content %}
-<!--    {{ aaa}}-->
     {% csrf_token %}
-    <div>
-        <table style="margin: 20px;">
-            <tr>
-                <td>Problem Code:</td>
-                <td>{{ exercise.code }}</td>
-            </tr>
-            <tr>
-                <td>Time limit:</td>
-                <td>{{ exercise.time_limit }} ms</td>
-            </tr>
-            <tr>
-                <td>Memory limit:</td>
-                <td>{{ exercise.memory_limit }} MB</td>
-            </tr>
-            <tr>
-                <td>Description:</td>
-                <td>{{ exercise.description }}</td>
-            </tr>
-            <tr>
-                <td>Input:</td>
-                <td>{{ exercise.input }}</td>
-            </tr>
-            <tr>
-                <td>Output:</td>
-                <td>{{ exercise.output }}</td>
-            </tr>
-        </table>
-    </div>
-
-
-    {% if var %}
-        {% if user.is_authenticated %}
+    {% if chua_bat_dau %}
+        <h1 style="text-align: center">Cuộc thi chưa bắt đầu</h1>
+    {% else %}
+        <div>
+            <table style="margin: 20px;">
+                <tr>
+                    <td>Problem Code:</td>
+                    <td>{{ exercise.code }}</td>
+                </tr>
+                <tr>
+                    <td>Time limit:</td>
+                    <td>{{ exercise.time_limit }} ms</td>
+                </tr>
+                <tr>
+                    <td>Memory limit:</td>
+                    <td>{{ exercise.memory_limit }} MB</td>
+                </tr>
+                <tr>
+                    <td>Description:</td>
+                    <td>{{ exercise.description }}</td>
+                </tr>
+                <tr>
+                    <td>Input:</td>
+                    <td>{{ exercise.input }}</td>
+                </tr>
+                <tr>
+                    <td>Output:</td>
+                    <td>{{ exercise.output }}</td>
+                </tr>
+            </table>
+        </div>
+        {% if dien_ra %}
+            {% if user.is_authenticated %}
             <form action="" method="post" enctype="multipart/form-data" style="font-size:13px">
                 {% csrf_token %}
                 {{ form }}
                 <input type="submit" name="submit" style="margin-top:10px">
             </form>
+            {% else %}
+            <button type="submit" class="btn btn-primary">
+                <a style="color: aliceblue" href="{% url 'login' %}">Đăng nhập để nộp bài</a>
+            </button>
+            {% endif %}
         {% else %}
-            <button type="submit" class="btn btn-primary"><a style="color: aliceblue"
-                                                             href="{% url 'login' %}">Đăng nhập
-                để nộp bài</a></button>
+             <h1 style="text-align: center">Cuộc thi đã kết thúc</h1>
         {% endif %}
-    {% else %}
-        <h1 style="text-align: center">Cuộc thi đã kết thúc/ Chưa bắt đầu</h1>
-    {% endif %}
-
-
-
-
-    <section class="mt-0 pb-5">
-        <div class="container card">
-            <div class="row card-body ">
-                <div class="col-5">
-                    <div class="m-0 p-0 text-center">
-                        {% if user.is_authenticated %}
+        <section class="mt-0 pb-5">
+            <div class="container card">
+                <div class="row card-body ">
+                    <div class="col-5">
+                        <div class="m-0 p-0 text-center">
+                            {% if user.is_authenticated %}
                             <form action="" method="post">
                                 <div class="form-group">
                                     {% csrf_token %}
                                     {{ form2.content }}
                                 </div>
                                 <button type="submit" class="btn btn-primary">Submit</button>
-
                             </form>
                             {{ a }}
-                        {% else %}
-                            <button type="submit" class="btn btn-primary"><a style="color: aliceblue"
-                                                                             href="{% url 'login' %}">Đăng nhập
-                                để bình luận</a></button>
-                        {% endif %}
+                            {% else %}
+                            <button type="submit" class="btn btn-primary">
+                                <a style="color: aliceblue" href="{% url 'login' %}">Đăng nhập để bình luận</a>
+                            </button>
+                            {% endif %}
+                        </div>
                     </div>
-
-                </div>
-                <div class="col-7">
-                    <div class="page-header">
-
-                        <h1 class="d-flex justify-content-between align-items-center">
-                            <div><span class="icon-book mr-3"></span>Comments</div>
-                            <small class="text-secondary"
-                                   style="font-size: large;">{{ dem }} comment{% if dem > 1 %}s{% else %}{% endif %}</small>
-                        </h1>
-                    </div>
-                    <hr>
-                    <div class="comments-list">
-                        {% for comment in q %}
+                    <div class="col-7">
+                        <div class="page-header">
+                            <h1 class="d-flex justify-content-between align-items-center">
+                                <div><span class="icon-book mr-3"></span>Comments</div>
+                                <small class="text-secondary"
+                                       style="font-size: large;">{{ dem }} comment{% if dem > 1 %}s{% else %}{% endif %}</small>
+                            </h1>
+                        </div>
+                        <hr>
+                        <div class="comments-list">
+                            {% for comment in q %}
                             <div class="media pt-3">
                                 <div class="media-body">
                                     <h3 class="media-heading user_name">{{ comment.author }}</h3>
@@ -113,14 +124,12 @@
 
                                 </div>
                             </div>
-                        {% endfor %}
-
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-
-
+        </section>
+    {% endif %}
 {% endblock %}
 

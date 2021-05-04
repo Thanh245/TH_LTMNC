@@ -9,9 +9,11 @@ from subprocess import *
 from users import models as modeluser
 
 def view_contest(request):
-    contests = Contest.objects.all()
+    contests = Contest.objects.filter( start__lte=timezone.now() )
+    contests2 = Contest.objects.filter(start__gte=timezone.now())
     context = {
         'list_contest': contests,
+        'list_contest2': contests2
     }
     return render(request, 'contests/contest.html', context)
 
@@ -68,17 +70,18 @@ def solve(file_name):
 def submit_exercise(request, exercise_id):
     form = ExerciseForm()
     exercise = get_object_or_404(Exercise, pk=exercise_id)
-    # # contests = Contest.objects.filter(end__gte=timezone.now())
     contest_start = exercise.contest.start
     contest_end = exercise.contest.end
-    # print('--------------------------------------------------------')
-    # print('--------------------------------------------------------')
-    # print('--------------------------------------------------------')
-    # print(contest_start < timezone.now())
-    if contest_start < timezone.now() and timezone.now() < contest_end:
-        var = True
-    else:
-        var = False
+    dien_ra = False
+    chua_bat_dau = False
+    # ket_thuc = False
+    if timezone.now() <= contest_end:
+        if contest_start <= timezone.now():
+            dien_ra = True
+        else:
+            chua_bat_dau = True
+    # else:
+    #     ket_thuc = True
 
     if request.method == "POST":
         print("req", request.FILES.get('file'))
@@ -110,7 +113,9 @@ def submit_exercise(request, exercise_id):
         'nav': 'job_listing',
         'dem': dem,
         'aaa': 123236,
-        'var': var
+        'dien_ra': dien_ra,
+        'chua_bat_dau': chua_bat_dau,
+        # 'ket_thuc': ket_thuc
     }
 
     return render(request, 'contests/submit_exercise.html', context)
@@ -168,10 +173,11 @@ class create_contest(View):
         g = CreateContestForm(request.POST)
         if g.is_valid():
             g.save()
-            contests = Contest.objects.all()
-
+            contests = Contest.objects.filter(start__lte=timezone.now())
+            contests2 = Contest.objects.filter(start__gte=timezone.now())
             context = {
-                'list_contest': contests
+                'list_contest': contests,
+                'list_contest2': contests2
             }
             return render(request, 'contests/contest.html', context)
         else:

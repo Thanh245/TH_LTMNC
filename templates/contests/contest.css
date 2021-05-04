@@ -1,0 +1,22 @@
+.contest_list{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    width: 95%;
+}
+
+.contest_list td, .contest_list th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.contest_list tr:nth-child(even){background-color: #f2f2f2;}
+.contest_list tr:hover {background-color: #ddd;}
+
+.contest_list th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4CAF50;
+  color: white;
+}

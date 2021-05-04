@@ -9,11 +9,9 @@ from subprocess import *
 from users import models as modeluser
 
 def view_contest(request):
-    contests = Contest.objects.filter( start__lte=timezone.now() )
-    contests2 = Contest.objects.filter(start__gte=timezone.now())
+    contests = Contest.objects.all()
     context = {
         'list_contest': contests,
-        'list_contest2': contests2
     }
     return render(request, 'contests/contest.html', context)
 
@@ -164,7 +162,7 @@ class create_contest(View):
                     a = CreateContestForm()
                     return render(request, 'contests/create_contest.html', {'f': a})
 
-        return render(request, 'Not_Found.html')
+        return render(request, 'users/login.html')
 
     def post(self, request):
         g = CreateContestForm(request.POST)
